@@ -1,0 +1,41 @@
+### Normal Python Package ###
+
+[project]
+dependencies = ["rich"]
+name = "python_bindings"
+requires-python = ">= 3.11"
+scripts = { python-bindings-main = "python_bindings:main" }
+version = "0.1.0"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+### Pixi specific ###
+
+[tool.pixi.workspace]
+channels = [
+  "https://prefix.dev/pixi-build-backends",
+  "https://prefix.dev/conda-forge",
+]
+platforms = ["win-64", "linux-64", "osx-arm64", "osx-64"]
+preview = ["pixi-build"]
+
+[tool.pixi.dependencies]
+python_bindings = { path = "." }
+
+[tool.pixi.tasks]
+start = "python-bindings-main"
+
+[tool.pixi.package]
+name = "python_bindings"
+version = "0.1.0"
+
+[tool.pixi.package.build]
+backend = { name = "pixi-build-python", version = "0.1.*" }
+
+[tool.pixi.package.host-dependencies]
+hatchling = "==1.26.3"
+
+[tool.pixi.package.run-dependencies]
+rich = "13.9.*"

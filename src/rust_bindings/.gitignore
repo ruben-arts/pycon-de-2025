@@ -1,0 +1,11 @@
+
+# pixi environments
+.pixi
+*.egg-info
+
+# Rust
+target
+
+# Pytest
+.pytest_cache
+__pycache__

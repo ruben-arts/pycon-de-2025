@@ -1,0 +1,12 @@
+[workspace]
+channels = ["https://prefix.dev/conda-forge"]
+name = "pycon-de-2025"
+platforms = ["osx-arm64"]
+preview = ["pixi-build"]
+
+[tasks]
+
+[dependencies]
+rust_bindings = { path = "src/rust_bindings" }
+cpp_bindings = { path = "src/cpp_bindings" }
+python_bindings = { path = "src/python_bindings" }

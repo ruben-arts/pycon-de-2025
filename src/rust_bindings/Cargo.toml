@@ -1,0 +1,12 @@
+[package]
+authors = ["Ruben Arts <ruben.arts@hotmail.com>"]
+name = "rust_bindings"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "rust_bindings"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.24.0", features = ["extension-module"] }
