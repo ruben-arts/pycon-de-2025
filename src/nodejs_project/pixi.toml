@@ -6,8 +6,8 @@ platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
-start = "node rattler-vs-conda-build.js"
-
+start = { cmd = "node rattler-vs-conda-build.js", depends-on = "install"}
+install = { cmd = "npm install"}
 [dependencies]
 nodejs = ">=22.13.0,<22.14"
 gh = ">=2.70.0,<3"
