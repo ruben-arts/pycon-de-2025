@@ -1,0 +1,13 @@
+[workspace]
+authors = ["Ruben Arts <ruben.arts@hotmail.com>"]
+channels = ["https://prefix.dev/conda-forge"]
+name = "nodejs_project"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+start = "node rattler-vs-conda-build.js"
+
+[dependencies]
+nodejs = ">=22.13.0,<22.14"
+gh = ">=2.70.0,<3"

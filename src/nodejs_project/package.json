@@ -1,0 +1,14 @@
+{
+  "name": "nodejs_project",
+  "version": "1.0.0",
+  "description": "Simple npm package in a pixi workspace",
+  "main": "rattler-vs-conda-build.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
