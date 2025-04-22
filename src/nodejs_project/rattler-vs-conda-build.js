@@ -21,6 +21,10 @@ const COMMITS = {
     v0: 'ac49d7062a7c0c7f4b3b7f00b36b869fe381c5e6', // v13.9.4
     v1: 'f9b6ead9d2e82c854f4fee4a5cd47d66db39dbc2', // v14.0.0 but with v1
   },
+  suitesparse: {
+    v0: '0498432e5b0d19de340332005802fb6ff666b9ab',
+    v1: 'a7699fa70429ac60fb0fb243fa8db18a284917fe', // v14.0.0 but with v1
+  },
 };
 
 const RE_DURATION = /^Successful in (.*)m$/;
