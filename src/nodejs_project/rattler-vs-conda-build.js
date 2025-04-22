@@ -1,6 +1,8 @@
-// Save as check-ci-durations.js
 import fetch from 'node-fetch';
 import { execSync } from 'child_process';
+
+import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+import fs from 'fs';
 
 const COMMITS = {
   vale: {
@@ -65,10 +67,76 @@ async function ciDelta([pkg, commits], token) {
   };
 }
 
+async function renderChart(results) {
+  const width = 400;
+  const height = 400;
+  const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
+
+  results.sort((a, b) => Math.max(parseFloat(b.v0), parseFloat(b.v1)) - Math.max(parseFloat(a.v0), parseFloat(a.v1)));
+
+  const labels = results.map(r => r.pkg);
+  const v0Data = results.map(r => parseFloat(r.v0));
+  const v1Data = results.map(r => parseFloat(r.v1));
+
+  const configuration = {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'rattler-build',
+          data: v1Data,
+          backgroundColor: 'rgba(255, 99, 132, 1)',
+        },
+        {
+          label: 'conda-build',
+          data: v0Data,
+          backgroundColor: 'rgba(54, 162, 235, 1)',
+        },
+      ],
+    },
+    options: {
+      indexAxis: 'x',
+      responsive: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'conda-forge build Duration Comparison (conda-build vs rattler-build)',
+        },
+        legend: {
+          position: 'top',
+        },
+      },
+      scales: {
+        x: {
+          stacked: false,
+          ticks: { font: { size: 14 } },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Minutes',
+          },
+        },
+      },
+      datasets: {
+        bar: {
+          barThickness: 60,
+          grouped: false,
+        },
+      },
+    },
+  };
+
+  const image = await chartJSNodeCanvas.renderToBuffer(configuration);
+  fs.writeFileSync('ci-durations.png', image);
+}
+
 (async () => {
   const token = await getGitHubToken();
   const results = await Promise.all(
     Object.entries(COMMITS).map((entry) => ciDelta(entry, token))
   );
   console.table(results);
+  await renderChart(results);
 })();
