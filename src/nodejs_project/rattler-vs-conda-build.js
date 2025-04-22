@@ -23,8 +23,12 @@ const COMMITS = {
   },
   suitesparse: {
     v0: '0498432e5b0d19de340332005802fb6ff666b9ab',
-    v1: 'a7699fa70429ac60fb0fb243fa8db18a284917fe', // v14.0.0 but with v1
+    v1: 'a7699fa70429ac60fb0fb243fa8db18a284917fe',
   },
+  "rattler-build": {
+    v0: '9c866f74b7e4264364ee0f54ec601ddb0d2e2e23',
+    v1: '2aecf8fb4326bbd83aaad51a60204ad4c5f00fd1',
+  }
 };
 
 const RE_DURATION = /^Successful in (.*)m$/;
@@ -136,11 +140,27 @@ async function renderChart(results) {
   fs.writeFileSync('ci-durations.png', image);
 }
 
+function printCumulative(results) {
+  const totalV0 = results.reduce((sum, r) => sum + parseFloat(r.v0), 0);
+  const totalV1 = results.reduce((sum, r) => sum + parseFloat(r.v1), 0);
+
+  const delta = totalV0 - totalV1;
+  const speedup = totalV0 / totalV1;
+
+  console.log('\nCumulative Summary:');
+  console.log(`  conda-build:     ${totalV0.toFixed(2)} min`);
+  console.log(`  rattler-build:   ${totalV1.toFixed(2)} min`);
+  console.log(`  Saved:           ${delta.toFixed(2)} min`);
+  console.log(`  Speedup:         ${speedup.toFixed(2)}x`);
+  console.log(`  Total Packages:  ${results.length}`);
+}
+
 (async () => {
   const token = await getGitHubToken();
   const results = await Promise.all(
     Object.entries(COMMITS).map((entry) => ciDelta(entry, token))
   );
   console.table(results);
+  printCumulative(results);
   await renderChart(results);
 })();
