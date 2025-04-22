@@ -28,7 +28,7 @@ const COMMITS = {
   "rattler-build": {
     v0: '9c866f74b7e4264364ee0f54ec601ddb0d2e2e23',
     v1: '2aecf8fb4326bbd83aaad51a60204ad4c5f00fd1',
-  }
+  },
 };
 
 const RE_DURATION = /^Successful in (.*)m$/;
@@ -76,8 +76,9 @@ async function ciDelta([pkg, commits], token) {
 }
 
 async function renderChart(results) {
-  const width = 400;
-  const height = 400;
+  const width = 1200;
+  const height = width;
+
   const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
 
   results.sort((a, b) => Math.max(parseFloat(b.v0), parseFloat(b.v1)) - Math.max(parseFloat(a.v0), parseFloat(a.v1)));
@@ -86,6 +87,7 @@ async function renderChart(results) {
   const v0Data = results.map(r => parseFloat(r.v0));
   const v1Data = results.map(r => parseFloat(r.v1));
 
+  const font = 46;
   const configuration = {
     type: 'bar',
     data: {
@@ -94,12 +96,12 @@ async function renderChart(results) {
         {
           label: 'rattler-build',
           data: v1Data,
-          backgroundColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: '#001E4DCC',
         },
         {
           label: 'conda-build',
           data: v0Data,
-          backgroundColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: '#43B02A',
         },
       ],
     },
@@ -108,32 +110,52 @@ async function renderChart(results) {
       responsive: false,
       plugins: {
         title: {
-          display: true,
+          display: false,
           text: 'conda-forge build Duration Comparison (conda-build vs rattler-build)',
+          font: {
+            size: font,
+          },
         },
         legend: {
           position: 'top',
+          labels: {
+            font: {
+              size: font,
+            },
+          },
         },
       },
       scales: {
-        x: {
-          stacked: false,
-          ticks: { font: { size: 14 } },
-        },
         y: {
+          ticks: {
+            font: {
+              size: font,
+            },
+          },
+        },
+        x: {
           title: {
             display: true,
             text: 'Minutes',
+            font: {
+              size: font,
+            },
+          },
+          ticks: {
+            font: {
+              size: font,
+            },
           },
         },
       },
       datasets: {
         bar: {
-          barThickness: 60,
+          indexAxis: 'y',
+          barPercentage: 0.8,
           grouped: false,
         },
       },
-    },
+    }
   };
 
   const image = await chartJSNodeCanvas.renderToBuffer(configuration);
