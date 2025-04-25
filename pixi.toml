@@ -1,5 +1,5 @@
 [workspace]
-channels = ["https://conda.modular.com/max-nightly", "https://conda.modular.com/max", "https://repo.prefix.dev/modular-community", "https://prefix.dev/conda-forge"]
+channels = ["https://conda.modular.com/max-nightly", "https://conda.modular.com/max", "https://prefix.dev/modular-community", "https://prefix.dev/conda-forge"]
 name = "pycon-de-2025"
 platforms = ["osx-arm64"]
 preview = ["pixi-build"]

@@ -4,7 +4,7 @@ environments:
     channels:
     - url: https://conda.modular.com/max-nightly/
     - url: https://conda.modular.com/max/
-    - url: https://repo.prefix.dev/modular-community/
+    - url: https://prefix.dev/modular-community/
     - url: https://prefix.dev/conda-forge/
     packages:
       osx-arm64:
